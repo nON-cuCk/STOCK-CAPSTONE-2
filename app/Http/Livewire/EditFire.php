@@ -14,11 +14,15 @@ class EditFire extends Component
     public $serial_number;
     public $installation_date;
     public $expiration_date;
+    public $description;
+    public $status;
 
     protected $rules = [
         'firename' => 'required|string|max:255',
         'type' => 'required|string|max:255',
         'serial_number' => 'required|digits:7',
+        'description' => 'required|string|max:255',
+        'status' => 'required|string|max:255',
     ];
 
     public function mount()
@@ -39,6 +43,8 @@ class EditFire extends Component
         $this->serial_number = null;
         $this->installation_date = null;
         $this->expiration_date = null;
+        $this->description = null;
+        $this->status = null;
     }
 
     public function update($id)
@@ -50,6 +56,8 @@ class EditFire extends Component
         $this->serial_number = $fireList->serial_number;
         $this->installation_date = $fireList->installation_date;
         $this->expiration_date = $fireList->expiration_date;
+        $this->description = $fireList->description;
+        $this->status = $fireList->status;
     }
     public function save()
     {
@@ -62,6 +70,8 @@ class EditFire extends Component
             $fireList->serial_number = $this->serial_number;
             $fireList->installation_date = $this->installation_date;
             $fireList->expiration_date = $this->expiration_date;
+            $fireList->description = $this->description;
+            $fireList->status = $this->status;
             $fireList->save();
         } else {
             FireList::create([
@@ -70,6 +80,8 @@ class EditFire extends Component
                 'serial_number' => $this->serial_number,
                 'installation_date' => $this->installation_date,
                 'expiration_date' => $this->expiration_date,
+                'description' => $this->description,
+                'status' => $this->status,
             ]);
         }
 
@@ -82,7 +94,7 @@ class EditFire extends Component
         if ($this->fireListId) {
             // Find the fire list entry by ID
             $fireList = FireList::findOrFail($this->fireListId);
-            
+
             // Clear the values of the fields associated with the selected ID
             $fireList->update([
                 'firename' => '',
@@ -90,9 +102,11 @@ class EditFire extends Component
                 'serial_number' => '',
                 'installation_date' => null,
                 'expiration_date' => null,
+                'description' => null,
+                'status' => null,
             ]);
         }
-    
+
 
         $this->resetInput();
         $this->fetchFireLists();
