@@ -1,0 +1,313 @@
+--> location: resource\views\livewire\map\cas\ground-floor
+VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        @foreach ($fire as $fires)
+        <div class="icon-container CasDean" wire:model="room" wire:click="editFire({{ $fires->id }})">
+            <i class="fas fa-edit edit-icon"></i>
+        </div>
+        <div class="icon-container CasDean" wire:model="room" wire:click="viewFire({{ $fires->id }})">
+            <i class="fas fa-eye eye-icon"></i>
+        </div>
+        <div class="icon-container CasDean"  wire:model="room" wire:click="createFire">
+            <i class="fas fa-plus plus-icon"></i>
+        </div>
+
+
+        <div class="icon-container CAS106" wire:click="editFire({{ $fires->id }})">
+            <i class="fas fa-edit edit-icon"></i>
+        </div>
+        <div class="icon-container CAS106" wire:click="viewFire({{ $fires->id }})">
+            <i class="fas fa-eye eye-icon"></i>
+        </div>
+        <div class="icon-container CAS106" wire:click="createFire">
+            <i class="fas fa-plus plus-icon"></i>
+        </div>
+       
+        <span class="CAS105" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS105" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS105" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-plus plus-icon"></i></span>
+        <span class="CAS104" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS104" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="MCL" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="MCL" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS103" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS103" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS102" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS102" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS101" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS101" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS107" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS107" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS108" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS108" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS109" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS109" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS-SSG" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon" id="eye-icons"></i></span>
+        <span class="CAS-SSG" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"id="edit-icons"></i></span>
+        <span class="CAS110" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS110" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS111" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS111" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS112" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS112" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        @endforeach
+        <div>
+  {{-- Modal --}}
+      <div wire.ignore.self class="modal fade" id="MapFormModal" tabindex="-1" role="dialog" aria-labelledby="MapFormModal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <livewire:map.form />
+        </div>
+      </div>
+      @section('custom_script')
+      @include('layouts.scripts.MapForm-scripts')
+      @endsection
+  </div>
+
+
+
+  ----------LOCATION: App\Http\Livewire\ground-floor--------------------
+
+
+    public $fireId;
+    public $viewMode = false;
+    public $search = '';
+    public $action = '';  //flash
+    public $message = '';  //flash
+    public $selectedFloor = 'ground-floor';
+
+    protected $listeners = [
+        'refreshGroundFLoor' => '$refresh',
+        'deleteFire',
+        'editFire',
+        'openViewModal'
+        
+    ];
+      public function updatingSearch()
+    {
+        $this->emit('refreshTable');
+    }
+    public function createFire()
+    {
+        $this->emit('resetInputFields');
+        $this->emit('openMapFormModal');
+    }
+    public function editFire($fireId)
+    {
+        $this->fireId = $fireId;
+        $this->emit('fireId', $this->fireId);
+        $this->emit('openMapFormModal');
+        
+    }
+    public function viewFire($fireId)
+    {
+        $this->fireId = $fireId;
+        $this->viewMode = true; // Set view mode to true
+        $this->emit('openMapFormModal', $this->fireId);
+    }
+
+ 
+    
+    public function getStatusIndicator($status)
+    {
+        if ($status === 'Active') {
+            return 'green';
+        } elseif ($status === 'Inactive') {
+            return 'orange';
+        } elseif ($status === 'Refill') {
+            return 'gray';
+        } else {
+            return 'gray'; // Default to gray if status is not recognized
+        }
+    }
+
+    public function render()
+    {
+        $fire =FireList::all();
+
+
+        return view('livewire.map.cas.ground-floor', [
+            'fire' => $fire,
+
+        ]);
+    }
+
+    ----------------LOCATION:resource\livewire\map\cas\third-floor------------------------
+            <span class="CFR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CFR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS306" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS306" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS305" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS305" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS304" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS304" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS303" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS303" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS302" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS302" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS301" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS301" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS309" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS309" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS310" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS310" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CAS311" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CAS311" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+        <span class="CEFR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CEFR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span>
+
+
+        ------------------------------LOCATION: resource\livewire\map\cas\fourth-floor
+                <span class="MC" onclick="openModal('')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="MC" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span> 
+        <span class="CR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"id="eye-icon"></i></span>
+        <span class="CR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"id="edit-icon"></i></span>
+        <span class="TR3" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="TR3" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span> 
+        <span class="TR2" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="TR2" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span> 
+        <span class="TR1" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="TR1" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span> 
+        <span class="CONTROL1" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"id="eye-icon"></i></span>
+        <span class="CONTROL1" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"id="edit-icon"></i></span> 
+        <span class="CONTROL2" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"id="eye-icon"></i></span>
+        <span class="CONTROL2" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"id="edit-icon"></i></span>
+        <span class="IRS" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="IRS" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span> 
+        <span class="CL2" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CL2" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span> 
+        <span class="CL1" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CL1" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span> 
+        <span class="CMR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="CMR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span> 
+        <span class="LMR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-eye eye-icon"></i></span>
+        <span class="LMR" onclick="openModal('FACULTY COMPUTING AND RESEATCH CENTER')"><i class="fas fa-edit edit-icon"></i></span> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ----------------------------------this is for storing------------------------------------------------
+
+view------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<div>
+    <h2>Type Lists</h2>
+    <table class="table-auto w-full">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($typeLists as $typeList)
+                <tr>
+                    <td>{{ $typeList->id }}</td>
+                    <td>{{ $typeList->description }}</td>
+                    <td>
+                        <button wire:click="edit({{ $typeList->id }})">Edit</button>
+                        <button wire:click="delete({{ $typeList->id }})" onclick="return confirm('Are you sure?')">Delete</button>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <h2>{{ $typeListId ? 'Edit' : 'Add' }} Type List</h2>
+    <form wire:submit.prevent="save">
+        <input type="text" wire:model="description" placeholder="Description">
+        @error('description') <span class="error">{{ $message }}</span> @enderror
+        <button type="submit">{{ $typeListId ? 'Update' : 'Save' }}</button>
+    </form>
+</div>
+
+
+<<<<<<<<<<<<<<----------------------------------COMPONENT LIVEWIRE----------------------------->>>>>>>>>>>>>>>>>>>>>>>>
+MODAL IS ALREADY PROVIDED
+<?php
+
+namespace App\Http\Livewire;
+
+use Livewire\Component;
+use App\Models\TypeList;
+
+class Edit extends Component
+{
+    public $typeLists;
+    public $description;
+    public $typeListId;
+
+    protected $rules = [
+        'description' => 'required|string|max:255',
+    ];
+
+    public function mount()
+    {
+        $this->fetchTypeLists();
+    }
+
+    public function fetchTypeLists()
+    {
+        $this->typeLists = TypeList::all();
+    }
+
+    public function resetInput()
+    {
+        $this->description = null;
+        $this->typeListId = null;
+    }
+
+    public function edit($id)
+    {
+        $typeList = TypeList::findOrFail($id);
+        $this->typeListId = $typeList->id;
+        $this->description = $typeList->description;
+    }
+
+    public function save()
+    {
+        $this->validate();
+
+        if ($this->typeListId) {
+            $typeList = TypeList::findOrFail($this->typeListId);
+            $typeList->description = $this->description;
+            $typeList->save();
+        } else {
+            TypeList::create(['description' => $this->description]);
+        }
+
+        $this->resetInput();
+        $this->fetchTypeLists();
+    }
+
+    public function delete($id)
+    {
+        TypeList::findOrFail($id)->delete();
+        $this->fetchTypeLists();
+    }
+
+    public function render()
+    {
+        return view('livewire.edit');
+    }
+}
+
+
+
+
+
